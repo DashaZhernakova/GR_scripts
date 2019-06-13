@@ -1,0 +1,77 @@
+args <- commandArgs(trailingOnly = TRUE)
+library(SNPRelate)
+
+
+chisq_tst<-function(genotype,phtpe)
+{
+	num.g<-dim(genotype)[2]	
+	qas<-NULL
+	pv<-NULL
+	for (i in 1:num.g) 
+	{
+ 		gtype<-genotype[,i]    
+		sbst<-(gtype!=3)  
+		gtype<-gtype[sbst]
+		phtype<-phtpe[sbst]	
+ 		c.tab<-table(phtype,gtype)
+ 		if (min(dim(c.tab))>1){
+			sr <- rowSums(c.tab)
+	    	sc <- colSums(c.tab)
+	    	E <- outer(sr, sc, "*")/sum(sr)    
+			pv[i]<-chisq.test(phtype,gtype)$p.value 		
+		} else pv[i]<-NA 
+	}
+	data.out<-list()
+	data.out$pv<-pv
+} 
+
+plink_fname <- args[1]
+out_fname <- args[2]
+source_fname <- args[3]
+
+snpgdsBED2GDS(paste(plink_fname,".bed",sep=""),paste(plink_fname,".fam",sep=""),paste(plink_fname,".bim",sep=""),paste(plink_fname,".gds",sep=""))
+dat.f<-openfn.gds(paste(plink_fname,".gds",sep=""),readonly=FALSE)
+gen<-read.gdsn(index.gdsn(dat.f,"genotype"))
+id<-read.gdsn(index.gdsn(dat.f,"sample.id"))
+snp<-read.gdsn(index.gdsn(dat.f,"snp.id"))
+chr<-read.gdsn(index.gdsn(dat.f,"snp.chromosome"))
+pos<-read.gdsn(index.gdsn(dat.f,"snp.position"))
+all<-read.gdsn(index.gdsn(dat.f,"snp.allele"))
+ant<-read.gdsn(index.gdsn(dat.f,"sample.annot"))
+closefn.gds(dat.f)
+
+source <- read.table(source_fname, sep = "\t", header = T, as.is = T)
+source_matched <- source[match(id, source$id, nomatch = 0),]
+
+sors<-source_matched$Source
+ftr<-sors!="GR"
+pv<-chisq_tst(gen[ftr,],sors[ftr])
+
+print("Num SNPs before correction:")
+print(ncol(gen))
+
+pvb<-0.05/length(snp)
+ftr<-pv>=pvb
+snp<-snp[ftr]
+chr<-chr[ftr]
+pos<-pos[ftr]
+all<-all[ftr]
+gen<-gen[,ftr]
+
+print("Num SNPs after correction:")
+print(ncol(gen))
+#
+dat.f<-createfn.gds(paste(out_fname,".gds",sep=""))
+add.gdsn(dat.f,"sample.id", val=id,compress="ZIP",closezip=TRUE)
+add.gdsn(dat.f,"snp.id", val=snp,compress="ZIP",closezip=TRUE)
+add.gdsn(dat.f,"snp.chromosome", val=chr,compress="ZIP",closezip=TRUE)
+add.gdsn(dat.f,"snp.position", val=pos,compress="ZIP",closezip=TRUE)
+add.gdsn(dat.f,"snp.allele", val=all,compress="ZIP",closezip=TRUE)
+add.gdsn(dat.f,"genotype", val=gen,compress="ZIP",closezip=TRUE,storage="bit2",replace=TRUE)
+add.gdsn(dat.f,"sample.annot", val=ant,compress="ZIP",closezip=TRUE)
+put.attr.gdsn(index.gdsn(dat.f,"genotype"),"sample.order")
+
+snpgdsGDS2BED(dat.f, out_fname)
+closefn.gds(dat.f)
+
+
