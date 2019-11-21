@@ -4,7 +4,13 @@ import glob
 import sys
 from collections import defaultdict
 
+
+
 def parse_stats_file(fname):
+	"""
+	Creates a dictionary with all bcftools stats from a stats file
+	@param fname: output of bcftools stats command
+	"""
     f = open(fname)
     bcftools_stats = dict()
     for line in f:
@@ -49,8 +55,10 @@ def parse_stats_file(fname):
     return s_name, bcftools_stats
 
 if __name__ == '__main__':
+	"""
+	Gathers QC statistics from per-population bcftools stats files and combined the QC results into one table
+	"""
     path = sys.argv[1]
-    #path = "/Users/dashazhernakova/Documents/Doby/GenomeRussia/250samples/genotypeQC/stats/"
     bcftools_stats = defaultdict(list)
     fields = ['number_of_samples', 'number_of_records', 'number_of_SNPs', 'number_of_multiallelic_SNP_sites', 'number_of_singletons', 'tstv']
     for f in fields:

@@ -2,6 +2,9 @@ import vcf
 import sys
 from collections import defaultdict
 
+"""
+Counts the numbers of alleles on chrX and chrY for each sample
+"""
 if __name__ == '__main__':
     vcf_fname = sys.argv[1]
     vcf_reader = vcf.Reader(open(vcf_fname))

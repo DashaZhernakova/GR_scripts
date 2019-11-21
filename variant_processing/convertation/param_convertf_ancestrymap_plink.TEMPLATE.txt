@@ -1,0 +1,8 @@
+genotypename:    __NAME__.geno
+snpname:         __NAME__.snp 
+indivname:       __NAME__.ind
+outputformat:    PACKEDPED
+genotypeoutname: __NAME__.bed
+snpoutname:      __NAME__.bim
+indivoutname:    __NAME__.fam
+familynames:     NO

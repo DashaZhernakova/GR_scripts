@@ -1,5 +1,10 @@
 #!/bin/bash
 
+#
+# Merges 2 plink datasets, removing SNPs have discordant alleles from both datasets
+# ./merge_excl_both.sh <plink_prefix_dataset1> <plink_prefix_dataset2> <plink_prefix_merged_dataset>  
+#
+
 f1=$1
 f2=$2
 merged=$3

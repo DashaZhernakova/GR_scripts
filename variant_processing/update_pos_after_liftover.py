@@ -2,8 +2,15 @@
 import sys
 import gzip
 
-bed = open(sys.argv[1])
-bim = open(sys.argv[2])
+"""
+Updates coordinates in bim file after liftover (part of the liftover.sh pipeline):
+Writes new coordinates after liftover from a bed interval file resulting from liftover 
+to the plink bim file on which the liftover was done.
+SNP matching is done on SNP ids.
+"""
+
+bed = open(sys.argv[1]) # bed interval file with coordinates lifted over
+bim = open(sys.argv[2]) # bim file to update
 
 alleles = [l.strip().split("\t") for l in bim.readlines()]
 bim.close()

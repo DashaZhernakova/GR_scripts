@@ -1,0 +1,8 @@
+genotypename:    __PLINKFILE__.bed
+snpname:         __PLINKFILE__.bim 
+indivname:       __PLINKFILE__.fam 
+outputformat:    PACKEDANCESTRYMAP
+genotypeoutname: __AMAPFILE__.geno
+snpoutname:      __AMAPFILE__.snp
+indivoutname:    __AMAPFILE__.ind
+familynames:     NO

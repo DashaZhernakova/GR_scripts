@@ -1,9 +1,13 @@
 args <- commandArgs(trailingOnly = TRUE)
 
-#file_base <- args[1]
-#region_file <- args[2]
-file_base <- "/Users/dashazhernakova/Documents/Doby/GenomeRussia/freeze2019/genotype_QC/final2/GR_freeze2019.all_chr.QUAL40_GQ20_DP10_SP20.rsids.splitx.pheno"
-region_file <- "/Users/dashazhernakova/Documents/Doby/GenomeRussia/freeze2019/genotype_QC/final2/location-ethnicity.txt"
+#
+# Plots QC metrics obtained by run_genotype_QC.sh script
+#
+
+file_base <- args[1] # file prefix of all QC results
+region_file <- args[2] # file containg sample id in the first column and region in the second coumn
+#file_base <- "/Users/dashazhernakova/Documents/Doby/GenomeRussia/freeze2019/genotype_QC/final2/GR_freeze2019.all_chr.QUAL40_GQ20_DP10_SP20.rsids.splitx.pheno"
+#region_file <- "/Users/dashazhernakova/Documents/Doby/GenomeRussia/freeze2019/genotype_QC/final2/location-ethnicity.txt"
 pdf(paste0(file_base, ".QC.pdf"))
 
 #
@@ -66,13 +70,13 @@ legend("center", legend = c("Ok", "Problem"), pch = 16, col=c(1,2), xpd = T, cex
 #
 # Missing rate
 #
-miss <- read.table("GR_freeze2019.all_chr.QUAL40_GQ20_DP10_SP20.rsids.splitx.pheno.filtered.imiss", header = T)
+miss <- read.tableread.table(paste0(file_base,".filtered.imiss"), header = T)
 barplot(miss$F_MISS, ylim = c(0, max(0.1,max(miss$F_MISS))), names = miss$IID, ylab = "Missingness rate", main = "Fraction of missing genotypes after filtering", las=2, cex.names = 0.3, col = "steelblue1")
 print(miss[miss$F_MISS > 0.1,])
 #
 # Mendel errors
 #
-mendel <- read.table("GR_freeze2019.all_chr.QUAL40_GQ20_DP10_SP20.rsids.splitx.pheno.filtered.fmendel", header = T)
+mendel <- read.table(read.table(paste0(file_base,".filtered.fmendel"), header = T)
 barplot(mendel$N, names = mendel$FID, ylab = "# mendel errors", las =3, cex.names = 0.4, col = "steelblue1", main = "# mendel errors in filtered genotypes")
 print(mendel[mendel$N > 5000,])
 

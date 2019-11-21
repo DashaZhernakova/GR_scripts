@@ -1,0 +1,4 @@
+genotypename:   __AMAPFILE__.geno
+snpname:   __AMAPFILE__.snp
+indivname:   __AMAPFILE___2.ind
+popfilename:    __POPFILE__

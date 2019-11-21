@@ -2,13 +2,17 @@
 import sys
 from collections import defaultdict
 
-#
-# !!!! BEWARE OF FAMILIES WITH 2 AND MORE CHILDREN!!! NOT PARSED CORRECTLY
-#
+"""
+Creates a plink fam file from a tab-separated sample desciption table.
+Table columns: Sample ID Region Location Ethnicity Family_ID Family_status Gender
+
+!!!! BEWARE OF FAMILIES WITH 2 AND MORE CHILDREN!!! NOT PARSED CORRECTLY
+"""
+
+
 gender_dict = {}
 family_dict = {}
-#with open(sys.argv[1]) as f:
-with open("/Users/dashazhernakova/Documents/Doby/GenomeRussia/freeze2019/freeze2019_samples.txt") as f:
+with open(sys.argv[1]) as f:
     f.readline()
     for l in f:
         spl = l.strip().split("\t")

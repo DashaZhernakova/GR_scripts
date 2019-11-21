@@ -3,6 +3,10 @@ from collections import defaultdict
 import sys
 import vcf
 
+"""
+Calculates the number of overlapping SNPs in 3 datasets
+"""
+
 def addSNPsToDict(fname,snp_dict, idx):
         vcf_reader = vcf.Reader(open(fname))
         for record in vcf_reader:
@@ -11,12 +15,12 @@ def addSNPsToDict(fname,snp_dict, idx):
 			print "no MAF", id
 			continue
 		maf = record.INFO['MAF'][0]
-                ac = int(record.INFO['AC_Het'][0]) + int(record.INFO['AC_Hom'][0])
-                an = int(record.INFO['NS'])
-                snp = snp_dict[id]
-                snp[idx] = maf
-                snp[3] += ac
-                snp[4] += an
+		ac = int(record.INFO['AC_Het'][0]) + int(record.INFO['AC_Hom'][0])
+		an = int(record.INFO['NS'])
+		snp = snp_dict[id]
+		snp[idx] = maf
+		snp[3] += ac
+		snp[4] += an
 
         return snp_dict
 

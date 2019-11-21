@@ -1,17 +1,21 @@
 from cruzdb import Genome
 import sys
 
-fname = "/Users/dashazhernakova/Documents/Doby/GenomeRussia/freeze2019/pharmacogenetics/uniq_snp_pharm_list.txt"
-out_fname = "/Users/dashazhernakova/Documents/Doby/GenomeRussia/freeze2019/pharmacogenetics/uniq_snp_pharm_list.bed"
-out = open(out_fname, "w")
+"""
+Gets SNP chr:position by rs id
+"""
+
+fname = sys.argv[1]
+snp_col = sys.argv[2]
 hg38 = Genome('hg38')
 dbsnp = hg38.snp151
 
 for rs in (l.split()[0].rstrip() for l in open(fname) if l.startswith("rs")):
-    snp = dbsnp.filter_by(name=rs).first()
-    if snp:
-        out.write(snp.chrom + "\t" + str(snp.chromStart) + "\t" + str(snp.chromEnd) + "\t" + rs + "\n")
-    else:
-        print "No SNP:", rs
-
-out.close()
+with open(fname) as f:
+	for l in f:
+		spl = l.strip().split("\t")
+		rs = spl[snp_col]
+	    snp = dbsnp.filter_by(name=rs).first()
+    	if snp:
+        	spl[snp_col] = str(snp.chromStart) + ":" + str(snp.chromEnd)
+    	print "\t".join(spl)

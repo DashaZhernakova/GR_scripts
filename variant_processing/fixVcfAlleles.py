@@ -7,7 +7,11 @@ import argparse
 from pyfaidx import Fasta
 from itertools import izip
 from tqdm import tqdm
-    
+
+"""
+Aligns alleles in a VCF file according to a reference fasta file, swaps them if necessary
+"""
+
 def swapGenotype(vcf_reader, genotype):
     if (genotype.is_het) or (genotype.gt_type == None): # don't change heterozygous genotypes or missing
         return genotype

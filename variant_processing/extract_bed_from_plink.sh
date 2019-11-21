@@ -1,5 +1,10 @@
 #!/bin/bash
 
+#
+# Filter plink dataset removing SNPs within intervals given as a 0-based bed file
+# ./extract_bed_from_plink.sh <plink_bfile_prefix> <bed_file_with_intervals_to_remove> <output_plink_prefix>
+#
+
 in_plink=$1
 mask=$2
 out_plink=$3

@@ -4,6 +4,11 @@ import vcf
 from geneimpacts import VEP, Effect
 from collections import defaultdict
 
+"""
+Parses Ensembl VEP annotation, an older version of parseVEP.py script. Better use parseVEP.py.
+Adds GWAS catalog annotation, per-population AFs, 1000G AFs
+"""
+
 def getTopImpact(effects):
 	top_severe = Effect.top_severity(effects)
 	if type(top_severe) is list:

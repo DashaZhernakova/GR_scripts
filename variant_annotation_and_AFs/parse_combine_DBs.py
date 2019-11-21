@@ -1,3 +1,9 @@
+#/bin/bash
+
+#
+# Downloads GWAS catalog, (HGMD) and ClinVar, reformats them in a unified way, merges annotations for the same SNPs
+#
+
 # GWAS catalog
 wget https://www.ebi.ac.uk/gwas/api/search/downloads/alternative
 cut -f12,13,22,35 alternative | grep -v " x " |  awk 'BEGIN {FS=OFS="\t"}; {if ((length($1) > 1) && (length($4) > 1)) print}' | tail -n+2 | sort -k1,1 -k2,2n > gwas_catalog_v1.0.2-associations_e96_r2019-05-03_cut.txt

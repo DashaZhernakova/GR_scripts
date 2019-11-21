@@ -1,6 +1,9 @@
 args <- commandArgs(trailingOnly = TRUE)
 library(SNPRelate)
 
+#
+# Removes SNPs that have a low chi-squared p-value for testing difference between genotype counts in Mallick vs Pagani datasets
+#
 
 chisq_tst<-function(genotype,phtpe)
 {

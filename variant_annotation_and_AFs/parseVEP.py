@@ -4,6 +4,12 @@ import vcf
 from geneimpacts import VEP, Effect
 from collections import defaultdict
 
+"""
+Parses the output of Ensembl VEP and writes the result as a table. 
+Adds GWAS catalog and ClinVar annotation for variants and genes.
+The result is split by alleles
+"""
+
 def isLoF(effects):
     for effect in effects:
         if effect.effects['LoF'] == 'HC':
